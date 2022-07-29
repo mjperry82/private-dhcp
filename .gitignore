@@ -4,6 +4,12 @@ creds.py
 # Ignore route storage folder
 route_exports/
 
+# Ignore routers.csv
+routers.csv
+
+# Ignore Paramiko Log
+main_paramiko_log.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
