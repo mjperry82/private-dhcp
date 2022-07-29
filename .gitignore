@@ -4,8 +4,8 @@ creds.py
 # Ignore route storage folder
 route_exports/
 
-# Ignore routers.csv
-routers.csv
+# Ignore csv files
+*.csv
 
 # Ignore Paramiko Log
 main_paramiko_log.txt
