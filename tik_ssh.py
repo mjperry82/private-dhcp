@@ -20,14 +20,15 @@ def connect(host, username, password, port=22):
     try:
         client.connect(host, port, username, password,look_for_keys=False,allow_agent=False)
     except Exception as ex:
-        print("general exception")
+        print(f"general exception on host {host}")
         print(ex)
         client = None
     except (EOFError):
+        print(f"Error on host {host}")
         print(ex)
         client = None
     except (SSHException):
-        print("SSHExceptions")
+        print(f"SSHExceptions on host {host}")
         print(ex)
         client = None
             
@@ -45,7 +46,6 @@ def main():
     # hide unhandled paramiko errors
     paramiko.util.log_to_file("main_paramiko_log.txt", level = "INFO")
 
-    #hosts= ['10.128.0.25', '10.128.0.62']
     hosts = loadHosts(csvpath)
     commands = ['/system identity print', '/system package print where name=system']
     
