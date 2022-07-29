@@ -24,6 +24,9 @@ lease_list = []
 current_dir = Path.cwd()
 router_file = current_dir / 'routers.csv'
 
+# private dhcp range
+private_range = '172.16.0.0/12'
+
 def load_routers(path):
     #list to hold router names and IP
     routers = []
@@ -35,18 +38,29 @@ def load_routers(path):
     
     return routers
     
-def insert_leases(routers):
-    # to do: write insert_leases
-    print()
+def insert_leases(router):    
+    router_name = router[0]
+    ip = router[1]
+    
+    ssh = tik_ssh.connect(str(ip), creds.username, creds.password)
+    
+    if ssh != None:
+        command = f"/ip dhcp-server lease print count-only where address in {private_range}"
+    
+    output = tik_ssh.command(ssh, command)
+    
+    lease_list.append([router_name, ip, output[0]])
+    
 
 def poplulate_leases(routers):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=40) as executor:
         executor.map(insert_leases,routers)
 
 def main():
     routers = load_routers(router_file)
         
-    #populate_leases(routers)
+    poplulate_leases(routers)
+    
 
 if __name__ == "__main__":
     main()
